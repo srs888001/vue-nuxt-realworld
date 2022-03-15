@@ -80,7 +80,7 @@
 
       </div>
 
-    </div>
+    </div> 
   </div>
 
 </div>
@@ -88,7 +88,9 @@
 
 <script>
 export default {
-    name: "ProfileIndex"
+    name: "ProfileIndex",
+    // 在路由匹配组件渲染之前会先执行中间件处理
+    middleware: 'authenticated',
 }
 </script>
 

@@ -13,24 +13,33 @@
           </p>
 
           <ul class="error-messages">
-            <li>That email is already taken</li>
+            <!-- template 不会生成Dom -->
+            <template v-for="(values, key) in errors">
+              <li v-for="(value, index) in values" :key="index">
+                {{ key }} {{ value }}
+              </li>
+            </template>
           </ul>
 
           <!-- prevent 去除浏览器默认提交行为 -->
+          <!-- required 使用浏览器默认行为判空 -->
           <form @submit.prevent="onSubmit">
             <fieldset class="form-group" v-if="!isLogin">
               <input
                 class="form-control form-control-lg"
+                v-model="user.username"
                 type="text"
                 placeholder="Your Name"
+                required
               />
             </fieldset>
             <fieldset class="form-group">
               <input
                 class="form-control form-control-lg"
                 v-model="user.email"
-                type="text"
+                type="email"
                 placeholder="Email"
+                required
               />
             </fieldset>
             <fieldset class="form-group">
@@ -39,6 +48,8 @@
                 v-model="user.password"
                 type="password"
                 placeholder="Password"
+                required
+                minlength="6"
               />
             </fieldset>
             <button class="btn btn-lg btn-primary pull-xs-right">
@@ -52,9 +63,15 @@
 </template>
 
 <script>
-import request from "@/utils/request";
+import { login, register } from "@/api/user";
+
+// 仅在客户端加载 js-cookie 包
+// process.client是nuxt定义的
+const Cookie = process.client ? require('js-cookie') : undefined
 
 export default {
+  // 在路由匹配组件渲染之前会先执行中间件处理
+  middleware: 'notAuthenticated',
   name: "LoginIndex",
   computed: {
     isLogin() {
@@ -65,7 +82,8 @@ export default {
   data() {
     return {
       user: {
-        email: "",
+        username: "srs",
+        email: "srs@163.com",
         password: "",
       },
       errors: {}, // 错误信息
@@ -73,16 +91,37 @@ export default {
   },
   methods: {
     async onSubmit() {
-      const { data } = await request({
-        method: "POST",
-        url: "/api/users/login",
-        data: {
-           user: this.user
-        },
-      });
-      console.log(data);
+      try {
+        const { data } = this.isLogin
+          ? await login({
+              user: this.user,
+            })
+          : await register({
+              user: this.user,
+            });
 
-      this.$router.push("/");
+        // console.log(data)
+        // 保存用户的登录状态
+        this.$store.commit('setUser', data.user);
+
+        // 为了防止刷新页面数据丢失，我们需要把数据持久化
+        Cookie.set('user', JSON.stringify(data.user));
+
+        this.$router.push("/");
+      } catch (err) {
+        console.dir(err);
+        // this.errors = err.response.data.errors;
+
+        let user =  {
+            username: "srs",
+            email: "srs@163.com",
+            password: "",
+            image: "https://api.realworld.io/images/smiley-cyrus.jpeg"
+        }
+        this.$store.commit('setUser', user);
+        Cookie.set('user', JSON.stringify(user));
+        this.$router.push("/");
+      }
     },
   },
 };
