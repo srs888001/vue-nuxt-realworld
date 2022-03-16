@@ -1,11 +1,19 @@
-// import { request } from '@/plugins/request'
+import request from '@/utils/request.js'
 
-// // 获取公共文章列表
-// export const getArticles = params => {
+// 获取公共文章列表
+export const getArticles = params => {
+  return request({
+    method: 'GET',
+    url: '/api/articles',
+    params
+  })
+}
+
+
+// export const getTags = () => {
 //   return request({
 //     method: 'GET',
-//     url: '/api/articles',
-//     params
+//     url: '/api/tags'
 //   })
 // }
 

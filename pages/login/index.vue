@@ -14,11 +14,18 @@
 
           <ul class="error-messages">
             <!-- template 不会生成Dom -->
-            <template v-for="(values, key) in errors">
-              <li v-for="(value, index) in values" :key="index">
+            <!-- 备用接口错误信息要调整下 -->
+            <template v-for="(value, key) in errors">
+              <li :key="key">
                 {{ key }} {{ value }}
               </li>
             </template>
+
+            <!-- <template v-for="(values, key) in errors">
+              <li v-for="(value, index) in values" :key="index">
+                {{ key }} {{ value }}
+              </li>
+            </template> -->
           </ul>
 
           <!-- prevent 去除浏览器默认提交行为 -->
@@ -110,17 +117,17 @@ export default {
         this.$router.push("/");
       } catch (err) {
         console.dir(err);
-        // this.errors = err.response.data.errors;
+        this.errors = err.response.data.errors;
 
-        let user =  {
-            username: "srs",
-            email: "srs@163.com",
-            password: "",
-            image: "https://api.realworld.io/images/smiley-cyrus.jpeg"
-        }
-        this.$store.commit('setUser', user);
-        Cookie.set('user', JSON.stringify(user));
-        this.$router.push("/");
+        // let user =  {
+        //     username: "srs",
+        //     email: "srs@163.com",
+        //     password: "",
+        //     image: "https://api.realworld.io/images/smiley-cyrus.jpeg"
+        // }
+        // this.$store.commit('setUser', user);
+        // Cookie.set('user', JSON.stringify(user));
+        // this.$router.push("/");
       }
     },
   },
