@@ -13,6 +13,10 @@
           <div class="feed-toggle">
             <ul class="nav nav-pills outline-active">
               <li class="nav-item">
+                <a class="nav-link active" href="">Your Feed</a>
+              </li>
+
+              <li class="nav-item">
                 <a class="nav-link active" href="">Global Feed</a>
               </li>
             </ul>
@@ -72,47 +76,51 @@
               <span>Read more...</span>
             </nuxt-link>
           </div>
-        </div>
 
-        <!-- 分页列表 -->
-        <nav>
-          <ul class="pagination">
-            <li
-              class="page-item"
-              :class="{
-                active: item === pageIndex,
-              }"
-              v-for="item in totalPage"
-              :key="item"
-            >
-              <nuxt-link
-                class="page-link"
-                :to="{
-                  name: 'home',
-                  query: {
-                    page: item,
-                  },
+          <!-- 分页列表 -->
+          <nav>
+            <ul class="pagination">
+              <li
+                class="page-item"
+                :class="{
+                  active: item === pageIndex,
                 }"
-                >{{ item }}</nuxt-link
+                v-for="item in totalPage"
+                :key="item"
               >
-            </li>
-          </ul>
-        </nav>
+                <nuxt-link
+                  class="page-link"
+                  :to="{
+                    name: 'home',
+                    query: {
+                      page: item,
+                    },
+                  }"
+                  >{{ item }}</nuxt-link
+                >
+              </li>
+            </ul>
+          </nav>
+        </div>
         <!-- /分页列表 -->
-
         <div class="col-md-3">
           <div class="sidebar">
             <p>Popular Tags</p>
 
             <div class="tag-list">
-              <a href="" class="tag-pill tag-default">programming</a>
-              <a href="" class="tag-pill tag-default">javascript</a>
-              <a href="" class="tag-pill tag-default">emberjs</a>
-              <a href="" class="tag-pill tag-default">angularjs</a>
-              <a href="" class="tag-pill tag-default">react</a>
-              <a href="" class="tag-pill tag-default">mean</a>
-              <a href="" class="tag-pill tag-default">node</a>
-              <a href="" class="tag-pill tag-default">rails</a>
+              <nuxt-link
+                :to="{
+                  name: 'home',
+                  query: {
+                    tab: 'tag',
+                    tag: item,
+                  },
+                }"
+                class="tag-pill tag-default"
+                v-for="item in tags"
+                :key="item"
+                >{{ item }}</nuxt-link
+              >
             </div>
           </div>
         </div>
@@ -123,23 +131,41 @@
 
 <script>
 import { getArticles } from "@/api/article";
+import { getTags } from "@/api/tag";
 
 export default {
   name: "HomeIndex",
   async asyncData({ query }) {
     let pageIndex = Number.parseInt(query.page || 1);
-    let limit = 10;
+    let limit = 20;
+
+    let [ articleRes, tagsRes ] = await Promise.all([
+      getArticles({
+        limit,
+        offset: (pageIndex - 1) * limit,
+      }),
+      getTags(),
+    ]);
+
+    let { articles, articlesCount } = articleRes.data
+    let { tags } = tagsRes.data
+
     const { data } = await getArticles({
       limit,
       offset: (pageIndex - 1) * limit,
     });
+
+    const { data: tagsData = { tags: [] } } = await getTags();
+
     return {
-      articles: data.articles,
-      articlesCount: data.articlesCount,
+      articles,
+      articlesCount,
+      tags,
       limit,
       pageIndex,
     };
   },
+  // url变化会出现asyncData
   watchQuery: ["page"],
   computed: {
     totalPage() {
