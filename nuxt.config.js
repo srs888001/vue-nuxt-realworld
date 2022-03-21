@@ -56,5 +56,9 @@
                 }
             ])
         }
-    }
+    },
+    // 注册插件
+    plugins: [
+        '~/utils/request.js',
+     ]
 }

@@ -91,7 +91,7 @@ export default {
       user: {
         username: "srs",
         email: "srs@163.com",
-        password: "",
+        password: "111111",
       },
       errors: {}, // 错误信息
     };

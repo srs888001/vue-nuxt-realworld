@@ -53,7 +53,7 @@
                     name: 'home',
                     query: { tab: 'tag', tag: tag },
                   }"
-                  ># {{ tab }}</nuxt-link
+                  ># {{ tag }}</nuxt-link
                 >
               </li>
             </ul>
@@ -132,6 +132,7 @@
                     query: {
                       page: item,
                       tag: $route.query.tag,
+                      tab: tab
                     },
                   }"
                   >{{ item }}</nuxt-link
@@ -168,7 +169,7 @@
 </template>
 
 <script>
-import { getArticles } from "@/api/article";
+import { getArticles, getYourFeedArticles } from "@/api/article";
 import { getTags } from "@/api/tag";
 import { mapState } from 'vuex'
 
@@ -179,9 +180,12 @@ export default {
     const limit = 20;
     const tag = query.tag;
     const tab = query.tab || "Global_Feed";
+    const loadArticles = tab === 'Your_Feed'
+      ? getYourFeedArticles 
+      : getArticles
 
     const [articleRes, tagsRes] = await Promise.all([
-      getArticles({
+      loadArticles({
         limit,
         offset: (pageIndex - 1) * limit,
         tag,
