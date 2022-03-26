@@ -88,7 +88,8 @@
                   {{ article.author.username }}
                 </nuxt-link>
 
-                <span class="date"> {{ article.createdAt }}</span>
+                <!-- 管道符号 使用data过滤器 -->
+                <span class="date"> {{ article.createdAt | date('MMM DD, YYYY') }}</span>
               </div>
               <button
                 class="btn btn-outline-primary btn-sm pull-xs-right"

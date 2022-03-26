@@ -60,5 +60,6 @@
     // 注册插件
     plugins: [
         '~/utils/request.js',
+        '~/utils/dayjs.js'
      ]
 }
