@@ -55,7 +55,7 @@ export default {
   props: {
     article: {
       type: Object,
-      require: true,
+      required: true,
     },
   },
 };

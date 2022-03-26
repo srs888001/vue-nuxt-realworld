@@ -46,10 +46,19 @@ export const getArticle = slug => {
   })
 }
 
-// // 获取文章评论
-// export const getComments = slug => {
-//   return request({
-//     method: 'GET',
-//     url: `/api/articles/${slug}/comments`
-//   })
-// }
+// 获取文章评论
+export const getComments = slug => {
+  return request({
+    method: 'GET',
+    url: `/api/articles/${slug}/comments`
+  })
+}
+
+export const addComments = (slug, params) => {
+  return request({
+    method: 'POST',
+    url: `/api/articles/${slug}/comments`,
+    params,
+  })
+}
+
