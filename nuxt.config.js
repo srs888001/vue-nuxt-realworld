@@ -61,5 +61,10 @@
     plugins: [
         '~/utils/request.js',
         '~/utils/dayjs.js'
-     ]
+     ],
+
+    // server: {
+    //     host: '0.0.0.0',
+    //     port: 3000
+    // },
 }
