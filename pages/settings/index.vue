@@ -56,6 +56,12 @@
               </button>
             </fieldset>
           </form>
+
+          <hr>
+          <button class="btn btn-outline-danger" @click="logout">
+            Or click here to logout.
+          </button>
+
         </div>
       </div>
     </div>
@@ -94,10 +100,16 @@ export default {
     ...mapState(["user"]),
   },
   methods: {
+    logout(){
+        // 清除用户的登录状态
+        this.$store.commit("setUser", null);
+        Cookie.set("user", null);
+
+        this.$router.push("/");
+    },
+
     async onSubmit() {
       try {
-        console.log("Srs1==>", JSON.stringify(this.userinfo));
-
         let _userinfo = {};
         // 简单这样处理
         Object.keys(this.userinfo).forEach((key) => {
@@ -110,7 +122,6 @@ export default {
           user: _userinfo,
         });
 
-        // console.log(data)
         // 保存用户的登录状态
         this.$store.commit("setUser", data.user);
 

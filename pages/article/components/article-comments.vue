@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form class="card comment-form">
+    <form class="card comment-form" @submit.prevent="onAddComment">
       <div class="card-block">
         <textarea
           v-model="commentBody"
@@ -12,7 +12,7 @@
       </div>
       <div class="card-footer">
         <img :src="user.image" class="comment-author-img" />
-        <button class="btn btn-sm btn-primary" @click="onAddComment">
+        <button class="btn btn-sm btn-primary">
           Post Comment
         </button>
       </div>
@@ -86,9 +86,9 @@ export default {
     async onAddComment() {
         try {
             const { data } = await addComments(this.article.slug, {"comment": {"body": this.commentBody}});
-            this.comments.push(data);
+            this.comments.splice(0, 0, data.comment);
+            this.commentBody = ""
         } catch (error) {
-            onsole.log("error==>", error);
         }
     },
   },

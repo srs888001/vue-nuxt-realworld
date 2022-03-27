@@ -39,9 +39,10 @@ export default {
   async asyncData({ params }) {
     const { data } = await getArticle(params.slug);
     const { article } = data;
-    const md = new MarkdownIt();
-    article.body = md.render(article.body);
-
+    if (article.body) {
+      const md = new MarkdownIt();
+      article.body = md.render(article.body);
+    }
     return {
       article,
     };

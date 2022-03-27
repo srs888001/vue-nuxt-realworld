@@ -9,6 +9,32 @@ export const getArticles = params => {
   })
 }
 
+// 创建文章
+export const createArticles = data => {
+  return request({
+    method: 'POST',
+    url: '/api/articles',
+    data
+  })
+}
+
+// 更新文章
+export const updateArticles = (slug, data) => {
+  return request({
+    method: 'PUT',
+    url: `/api/articles/${slug}`,
+    data
+  })
+}
+
+// 删除文章
+export const deleteArticles = (slug) => {
+  return request({
+    method: 'PUT',
+    url: `/api/articles/${slug}`,
+  })
+}
+
 // 获取自己文章列表
 export const getYourFeedArticles = params => {
   return request({
@@ -54,11 +80,11 @@ export const getComments = slug => {
   })
 }
 
-export const addComments = (slug, params) => {
+export const addComments = (slug, data) => {
   return request({
     method: 'POST',
     url: `/api/articles/${slug}/comments`,
-    params,
+    data,
   })
 }
 

@@ -89,8 +89,8 @@ export default {
   data() {
     return {
       user: {
-        username: "srs",
-        email: "srs@163.com",
+        username: "srs1",
+        email: "srs1@163.com",
         password: "111111",
       },
       errors: {}, // 错误信息

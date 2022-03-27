@@ -33,7 +33,7 @@
                         component: resolve(__dirname, 'pages/login/')
                     },
                     {
-                        path: '/profile/:username', // 个人信息
+                        path: '/profile/:username/:favoritespath?', // 个人信息
                         name: 'profile',
                         component: resolve(__dirname, 'pages/profile/')
                     },
@@ -43,7 +43,7 @@
                         component: resolve(__dirname, 'pages/settings/')
                     },
                     {
-                        path: '/editor', 
+                        path: '/editor/:slug?', 
                         name: 'editor',
                         component: resolve(__dirname, 'pages/editor/')
                     },
@@ -62,7 +62,6 @@
         '~/utils/request.js',
         '~/utils/dayjs.js'
      ],
-
     // server: {
     //     host: '0.0.0.0',
     //     port: 3000
