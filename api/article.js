@@ -30,7 +30,7 @@ export const updateArticles = (slug, data) => {
 // 删除文章
 export const deleteArticles = (slug) => {
   return request({
-    method: 'PUT',
+    method: 'DELETE',
     url: `/api/articles/${slug}`,
   })
 }

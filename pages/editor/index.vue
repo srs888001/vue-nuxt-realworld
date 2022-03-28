@@ -102,7 +102,7 @@ export default {
   },
   methods: {
     async onSubmit() {
-      const { data } = this.slug ? await updateArticles( this.slug, this.article ) : await createArticles( this.article )
+      const { data } = this.slug ? await updateArticles( this.slug, {"article": this.article} ) : await createArticles( {"article": this.article} )
       this.$router.push({
         name: "article",
         params: {
@@ -123,7 +123,6 @@ export default {
     },
     async onDismiss() {},
     async removeTag(tag) {
-      console.log("Srs tag:", tag);
       const index = this.article.tagList.indexOf(tag);
       if (index === -1) {
         return;
